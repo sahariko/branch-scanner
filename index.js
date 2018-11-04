@@ -17,18 +17,18 @@ const listDirectoryBranches = (directory) => {
     const directoryPath = join(currentDirectory, directory);
     const directoryFiles = fs.readdirSync(directoryPath);
 
-    if (!directoryFiles.includes(GIT_FOLDER_NAME)) return
+    if (!directoryFiles.includes(GIT_FOLDER_NAME)) return;
 
     exec('git for-each-ref --format=\'%(refname:short)\' refs/heads', {
         cwd: directoryPath
     }, (error, stdout, stderr) => {
         if (error) throw new Error(error);
         if (stderr) throw new Error(stderr);
-        
+
         const branches = stdout.split('\n').filter((branch) => (
             branch && !IGNORED_BRANCHES.includes(branch)
         ));
-        
+
         if (branches.length) {
             console.log(colorizeCyan(`${directory} (${branches.length})`));
             console.log(branches.join('\n'), '\n');
