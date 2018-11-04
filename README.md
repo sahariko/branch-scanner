@@ -23,10 +23,8 @@ branch-scanner
 
 ### Options
 
-| Argument | What it does | Possible value |
+| Flag | What it does | Positional arguments |
 |----------|----------|---------------------------------------------|--------------|
-| `-v`, `--version` | output the program's version number | **REQUIRED** |
-
--v, --version           output the version number
-  -d, --directory [path]  specify a directory to scan (default: "the current directory")
-  -h, --help              output usage information
+| `-v`, `--version` | Output the program's version number. | - |
+| `-d`, `--directory` | Specify a directory to scan (default: "the current directory"). | An absolute or relative path to the directory you widh to scan. Defaults to the current directory. |
+| `-h`, `--help` | Output the program's usage information. | - |
