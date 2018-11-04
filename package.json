@@ -3,9 +3,11 @@
   "version": "0.0.1",
   "description": "A CLI utility for scanning git branches in a given directory",
   "main": "index.js",
+  "bin": {
+    "branch-scanner": "index.js"
+  },
+  "preferGlobal": true,
   "scripts": {
-    "start": "npm run build -- --watch",
-    "build": "webpack --config configuration/webpack.config",
     "lint": "eslint index.js --quiet",
     "test": "mocha lib/**/spec.js --opts configuration/mocha.opts"
   },
@@ -23,12 +25,9 @@
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
     "@babel/register": "^7.0.0",
-    "babel-loader": "^8.0.4",
     "chai": "^4.2.0",
     "eslint": "^5.8.0",
     "mocha": "^5.2.0",
-    "rimraf": "^2.6.2",
-    "webpack": "^4.24.0",
-    "webpack-cli": "^3.1.2"
+    "rimraf": "^2.6.2"
   }
 }

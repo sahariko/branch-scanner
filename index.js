@@ -1,7 +1,9 @@
-import path from 'path';
-import colorizeFactory from './lib/colorizeFactory';
-import gelAllSubdirectories from './lib/gelAllSubdirectories';
-import listDirectoryBranches from './lib/listDirectoryBranches';
+#!/usr/bin/env node
+
+const path = require('path');
+const colorizeFactory = require('./lib/colorizeFactory');
+const gelAllSubdirectories = require('./lib/gelAllSubdirectories');
+const listDirectoryBranches = require('./lib/listDirectoryBranches');
 
 const currentDirectory = process.cwd();
 
@@ -12,13 +14,14 @@ console.log(colorizeBold(`🤖  Scanning all directories under ${currentDirector
 
 const directories = gelAllSubdirectories(currentDirectory);
 
-directories.forEach(async (directory) => {
+directories.forEach((directory) => {
     const directoryPath = path.join(currentDirectory, directory);
 
-    const branches = await listDirectoryBranches(directoryPath);
-
-    if (branches.length) {
-        console.log(colorizeCyan(`${directory} (${branches.length})`));
-        console.log(branches.join('\n'), '\n');
-    }
+    listDirectoryBranches(directoryPath)
+        .then((branches) => {
+            if (branches.length) {
+                console.log(colorizeCyan(`${directory} (${branches.length})`));
+                console.log(branches.join('\n'), '\n');
+            }
+        });
 });
