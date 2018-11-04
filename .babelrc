@@ -1,11 +1,3 @@
 {
-  "comments": false,
-  "presets": ["@babel/env"],
-  "minified": true,
-  "env": {
-      "development": {
-          "comments": true,
-          "minified": false
-      }
-  }
+  "presets": ["@babel/env"]
 }

@@ -4,12 +4,17 @@
   "description": "A CLI utility for scanning git branches in a given directory",
   "main": "index.js",
   "scripts": {
-    "build": "babel index.js --out-dir dist",
+    "start": "npm run build -- --watch",
+    "build": "webpack --config configuration/webpack.config",
     "lint": "eslint index.js --quiet",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha spec.js --opts configuration/mocha.opts"
   },
   "keywords": [
-    "git"
+    "git",
+    "branch",
+    "branches",
+    "cli",
+    "terminal"
   ],
   "author": "Sahar Brodbeker <saharonb@gmail.com>",
   "license": "ISC",
@@ -17,6 +22,12 @@
     "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
-    "eslint": "^5.8.0"
+    "babel-loader": "^8.0.4",
+    "chai": "^4.2.0",
+    "eslint": "^5.8.0",
+    "mocha": "^5.2.0",
+    "rimraf": "^2.6.2",
+    "webpack": "^4.24.0",
+    "webpack-cli": "^3.1.2"
   }
 }

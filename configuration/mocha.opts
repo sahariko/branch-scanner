@@ -1,0 +1,4 @@
+--require configuration/test_setup.js
+--full-trace
+--inline-diffs
+--timeout 400
