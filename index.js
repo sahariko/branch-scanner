@@ -3,10 +3,15 @@
 const path = require('path');
 const program = require('commander');
 const { version } = require('./package.json');
-const { colorizeFactory, gelAllSubdirectories, listDirectoryBranches } = require('./lib');
+const {
+    colorizeFactory,
+    gelAllSubdirectories,
+    listDirectoryBranches,
+    validateDirectory
+} = require('./lib');
 
-const colorizeBold = colorizeFactory('\x1b[1m');
-const colorizeCyan = colorizeFactory('\x1b[36m');
+const colorizeBold = colorizeFactory(1);
+const colorizeCyan = colorizeFactory(36);
 
 program
   .version(version)
@@ -14,15 +19,16 @@ program
   .parse(process.argv);
 
 const { directory } = program;
+const workingDirectory = directory ? path.resolve(__dirname, directory) : process.cwd();
 
-const currentDirectory = directory ? path.resolve(__dirname, directory) : process.cwd();
+validateDirectory(workingDirectory);
 
-console.log(colorizeBold(`🤖  Scanning all directories under ${currentDirectory}\n`));
+console.log(colorizeBold(`🤖  Scanning all directories under ${workingDirectory}\n`));
 
-const directories = gelAllSubdirectories(currentDirectory);
+const directories = gelAllSubdirectories(workingDirectory);
 
 directories.forEach((directory) => {
-    const directoryPath = path.join(currentDirectory, directory);
+    const directoryPath = path.join(workingDirectory, directory);
 
     listDirectoryBranches(directoryPath)
         .then((branches) => {
