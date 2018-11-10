@@ -6,7 +6,7 @@
   "bin": {
     "branch-scanner": "branch-scanner.js"
   },
-  "preferGlobal": true,
+  "homepage": "https://github.com/sahariko/branch-scanner#readme",
   "scripts": {
     "lint": "eslint branch-scanner.js lib bin --quiet",
     "test": "mocha lib/**/spec.js --opts configuration/mocha.opts"
@@ -20,6 +20,10 @@
   ],
   "author": "Sahar Brodbeker <saharonb@gmail.com>",
   "license": "ISC",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/sahariko/branch-scanner.git"
+  },
   "devDependencies": {
     "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.2",
