@@ -1,4 +1,4 @@
-# branch-scanner
+# branch-scanner [![](https://img.shields.io/npm/v/branch-scanner.svg?colorA=cb3837&colorB=474a50)](https://www.npmjs.com/package/branch-scanner)
 
 A tiny CLI program that lists all non-standard git branches of the current directory's subdirectories.
 
