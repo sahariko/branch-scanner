@@ -17,6 +17,6 @@ program.parse(process.argv);
 
 const { directory } = program;
 const directorySpecified = directory && directory !== DIRECTORY_ARG_DEFAULT_MESSAGE;
-const workingDirectory = directorySpecified ? path.resolve(__dirname, directory) : process.cwd();
+const workingDirectory = directorySpecified ? path.resolve(process.cwd(), directory) : process.cwd();
 
 main(workingDirectory);
