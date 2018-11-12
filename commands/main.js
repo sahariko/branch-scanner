@@ -1,7 +1,7 @@
 const path = require('path');
 const {
     colorizeFactory,
-    gelAllSubdirectories,
+    getAllSubdirectories,
     listDirectoryBranches,
     validateDirectory
 } = require('../lib');
@@ -14,7 +14,7 @@ module.exports = (workingDirectory) => {
 
     console.log(colorizeBold(`🤖  Scanning all directories under ${workingDirectory}\n`));
 
-    const directories = gelAllSubdirectories(workingDirectory);
+    const directories = getAllSubdirectories(workingDirectory);
 
     directories.forEach((directory) => {
         const directoryPath = path.join(workingDirectory, directory);
