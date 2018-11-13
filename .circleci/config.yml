@@ -38,6 +38,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Set npm credentials
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+      - run:
           name: Publish to NPM
           command: npm publish
 
