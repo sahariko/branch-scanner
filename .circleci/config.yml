@@ -35,9 +35,6 @@ jobs:
           command: npm run lint
   publish:
     <<: *defaults
-    branches:
-      only:
-        - master
     steps:
       - checkout
       - run:
@@ -58,3 +55,6 @@ workflows:
       - publish:
           requires:
             - test
+          filters:
+            branches:
+              only: master
