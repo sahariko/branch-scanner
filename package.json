@@ -24,6 +24,9 @@
     "type": "git",
     "url": "https://github.com/sahariko/branch-scanner.git"
   },
+  "engines": {
+    "node": ">=8.0.0"
+  },
   "devDependencies": {
     "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.2",
