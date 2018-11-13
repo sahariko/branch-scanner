@@ -11,7 +11,7 @@ const colorizeCyan = colorizeFactory(36);
 
 let foundDirectories = false;
 
-module.exports = (workingDirectory) => {
+module.exports = async (workingDirectory) => {
     validateDirectory(workingDirectory);
 
     console.log(colorizeBold(`🤖  Scanning all directories under ${workingDirectory}\n`));
@@ -23,7 +23,8 @@ module.exports = (workingDirectory) => {
         return;
     }
 
-    directories.forEach(async(directory) => {
+    for (let i = 0; i < directories.length; i++) {
+        const directory = directories[i];
         const directoryPath = path.join(workingDirectory, directory);
 
         const branches = await listDirectoryBranches(directoryPath);
@@ -34,7 +35,7 @@ module.exports = (workingDirectory) => {
         console.log(branches.join('\n'), '\n');
 
         foundDirectories = true;
-    });
+    }
 
     if (!foundDirectories) {
         console.log('Nothing special to see here!');
