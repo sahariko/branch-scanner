@@ -29,7 +29,7 @@ module.exports = async (workingDirectory) => {
 
         const branches = await listDirectoryBranches(directoryPath);
 
-        if (!branches.length) return;
+        if (!branches.length) continue;
 
         console.log(colorizeCyan(`${directory} (${branches.length})`));
         console.log(branches.join('\n'), '\n');
