@@ -55,9 +55,3 @@ workflows:
       - publish:
           requires:
             - test
-
-# experimental:
-#   notify:
-#     branches:
-#       only:
-#         - master
