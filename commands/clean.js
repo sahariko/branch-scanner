@@ -40,7 +40,7 @@ module.exports = async (workingDirectory) => {
 
         if (!branches.length) continue;
 
-        // clearConsole();
+        clearConsole();
 
         console.log(generalMessage);
         console.log(colorizeBold('Cleaning'), colorizeCyan(`${directory}\n`));

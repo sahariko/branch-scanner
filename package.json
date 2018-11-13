@@ -8,7 +8,7 @@
   },
   "homepage": "https://github.com/sahariko/branch-scanner#readme",
   "scripts": {
-    "lint": "eslint branch-scanner.js lib bin --quiet",
+    "lint": "eslint branch-scanner.js . --quiet",
     "test": "mocha lib/**/spec.js --opts configuration/mocha.opts"
   },
   "keywords": [
