@@ -8,7 +8,8 @@ module.exports = {
     node: true
   },
   rules: {
-    'no-console': 0
+    'no-console': 0,
+    semi: 2
   },
   overrides: [
       {
