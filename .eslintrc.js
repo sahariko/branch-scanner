@@ -4,11 +4,14 @@ module.exports = {
       ecmaVersion: 2018,
       sourceType: 'module'
   },
+  root: true,
   env: {
-    node: true
+    node: true,
+    es6: true
   },
   rules: {
-    'no-console': 0
+    'no-console': 0,
+    semi: 2
   },
   overrides: [
       {

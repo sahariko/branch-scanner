@@ -9,6 +9,8 @@ const {
 const colorizeBold = colorizeFactory(1);
 const colorizeCyan = colorizeFactory(36);
 
+let foundDirectories = false;
+
 module.exports = (workingDirectory) => {
     validateDirectory(workingDirectory);
 
@@ -16,15 +18,25 @@ module.exports = (workingDirectory) => {
 
     const directories = getAllSubdirectories(workingDirectory);
 
-    directories.forEach((directory) => {
+    if (!directories.length) {
+        console.log('No directories found!');
+        return;
+    }
+
+    directories.forEach(async(directory) => {
         const directoryPath = path.join(workingDirectory, directory);
 
-        listDirectoryBranches(directoryPath)
-            .then((branches) => {
-                if (branches.length) {
-                    console.log(colorizeCyan(`${directory} (${branches.length})`));
-                    console.log(branches.join('\n'), '\n');
-                }
-            });
+        const branches = await listDirectoryBranches(directoryPath);
+
+        if (!branches.length) return;
+
+        console.log(colorizeCyan(`${directory} (${branches.length})`));
+        console.log(branches.join('\n'), '\n');
+
+        foundDirectories = true;
     });
+
+    if (!foundDirectories) {
+        console.log('Nothing special to see here!');
+    }
 };
