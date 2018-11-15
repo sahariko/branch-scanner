@@ -8,6 +8,8 @@ A tiny CLI program that lists all non-standard git branches of the current direc
 
 - [Installation and Usage](#installation-and-usage)
     * [Options](#options)
+    * [Commands](#commands)
+        * [`clean`](#clean)
 
 ## Installation and Usage
 
@@ -28,3 +30,11 @@ branch-scanner
 | `-v` | `--version` | Output the program's version number. | - |
 | `-d` | `--directory` | Specify a directory to scan (default: "the current directory"). | An absolute or relative path to the directory you widh to scan. Defaults to the current directory. |
 | `-h` | `--help` | Output the program's usage information. | - |
+
+### Commands
+
+#### `clean`
+
+Launches the program in "clean" mode, scanning each directory individually and presents a UI to select branches you wish to delete
+
+![screenshot](./docs/clean_screenshot.png)
