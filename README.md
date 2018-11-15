@@ -35,6 +35,6 @@ branch-scanner
 
 #### `clean`
 
-Launches the program in "clean" mode, scanning each directory individually and presents a UI to select branches you wish to delete
+Launches the program in "clean" mode, scanning each directory individually and presenting a UI to select branches you wish to delete.
 
 ![screenshot](./docs/clean_screenshot.png)
