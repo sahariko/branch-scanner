@@ -1,14 +1,14 @@
 {
   "name": "branch-scanner",
-  "version": "1.1.9",
+  "version": "1.2.0",
   "description": "A CLI utility for scanning git branches in a given directory",
-  "main": "branch-scanner.js",
+  "main": "index.js",
   "bin": {
-    "branch-scanner": "branch-scanner.js"
+    "branch-scanner": "index.js"
   },
   "homepage": "https://github.com/sahariko/branch-scanner#readme",
   "scripts": {
-    "lint": "eslint branch-scanner.js . --quiet",
+    "lint": "eslint index.js . --quiet",
     "test": "mocha lib/**/spec.js --opts configuration/mocha.opts"
   },
   "keywords": [

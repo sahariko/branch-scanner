@@ -3,11 +3,9 @@ const { execSync } = require('child_process');
 const inquirer = require('inquirer');
 const {
     colorizeFactory,
-    getAllSubdirectories,
-    listDirectoryBranches,
-    validateDirectory,
     clearConsole,
-    getCurrentBranch
+    getCurrentBranch,
+    scanAndExecute
 } = require('../lib');
 
 const colorizeBold = colorizeFactory(1);
@@ -20,55 +18,54 @@ const deleteBranch = (branch, directoryPath) => execSync(`git branch -D ${branch
     cwd: directoryPath
 });
 
-module.exports = async (workingDirectory) => {
-    validateDirectory(workingDirectory);
-    const generalMessage = colorizeBold(`🤖  Scanning all directories under ${workingDirectory}\n`);
+/**
+ * Interactively cleans a given directory from non-standard git branches.
+ * @param {Object}   options
+ * @param {Boolean}  options.recursive Whether the scan should run recursively or not.
+ * @param {String}   options.directoryPath The absolute path to the directory.
+ * @param {String[]} options.branches The directory's branches.
+ */
+const cleanDirectory = async ({directoryPath, parentDirectory, branches} = {}) => {
+    console.log('asdas');
+    clearConsole();
 
-    const directories = getAllSubdirectories(workingDirectory);
+    const generalMessage = colorizeBold(`🤖  Scanning all directories under ${parentDirectory}\n`);
+    const directory = path.basename(directoryPath);
 
-    if (!directories.length) {
-        console.log('No directories found!');
-        return;
-    }
+    console.log(generalMessage);
+    console.log(colorizeBold('Cleaning'), colorizeCyan(`${directory}\n`));
 
-    for (let i = 0; i < directories.length; i++) {
-        const directory = directories[i];
+    const currentBranch = await getCurrentBranch(directoryPath);
 
-        const directoryPath = path.join(workingDirectory, directory);
-
-        const branches = await listDirectoryBranches(directoryPath);
-
-        if (!branches.length) continue;
-
-        clearConsole();
-
-        console.log(generalMessage);
-        console.log(colorizeBold('Cleaning'), colorizeCyan(`${directory}\n`));
-
-        const currentBranch = await getCurrentBranch(directoryPath);
-
-        const answers = await inquirer
-            .prompt([
-                {
-                    name: 'branches',
-                    message: 'Which branches do you want to clean?',
-                    type: 'checkbox',
-                    pageSize: '20',
-                    choices: branches
-                },
-            ]);
+    const answers = await inquirer
+        .prompt([
+            {
+                name: 'branches',
+                message: 'Which branches do you want to clean?',
+                type: 'checkbox',
+                pageSize: '20',
+                choices: branches
+            },
+        ]);
 
 
-        answers.branches.forEach((branch) => {
-            try {
-                if (branch === currentBranch) {
-                    checkoutBranch(directoryPath);
-                }
-
-                deleteBranch(branch, directoryPath);
-            } catch (e) {
-                console.error(e.message);
+    answers.branches.forEach((branch) => {
+        try {
+            if (branch === currentBranch) {
+                checkoutBranch(directoryPath);
             }
-        });
-    }
+
+            deleteBranch(branch, directoryPath);
+        } catch (e) {
+            console.error(e.message);
+        }
+    });
+};
+
+module.exports = async (workingDirectory, recursive = false) => {
+    await scanAndExecute({
+        workingDirectory,
+        recursive,
+        callback: cleanDirectory
+    });
 };
