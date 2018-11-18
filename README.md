@@ -25,14 +25,12 @@ branch-scanner
 
 ### Options
 
--r, --recursive
-
-| Option | Alias | What it does | Positional arguments |
-|----------|----------|----------|--------------------|
-| `-v` | `--version` | Output the program's version number. | - |
-| `-d` | `--directory` | Specify a directory to scan (default: "the current directory"). | An absolute or relative path to the directory you widh to scan. Defaults to the current directory. |
-| `-r` | `--recursive` | Whether to keep running recursively or not (default: false). |- |
-| `-h` | `--help` | Output the program's usage information. | - |
+| Option | Alias | What it does | Positional arguments | Default
+|----------|----------|----------|--------------------|---|
+| `-v` | `--version` | Output the program's version number. | - | - |
+| `-d` | `--directory` | Specify a directory to scan. | An absolute or relative path to the directory you widh to scan. Defaults to the current directory. | The current directory |
+| `-r` | `--recursive` | Whether to keep running recursively or not. | - | `false` |
+| `-h` | `--help` | Output the program's usage information. | - | - |
 
 ### Commands
 
