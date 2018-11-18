@@ -5,21 +5,18 @@ const program = require('commander');
 const { version, description } = require('./package.json');
 const { main, clean } = require('./commands');
 
-const DIRECTORY_ARG_DEFAULT_MESSAGE = 'the current directory';
-
 const getWorkingDirectory = () => {
     const { directory } = program;
-    const directorySpecified = directory && directory !== DIRECTORY_ARG_DEFAULT_MESSAGE;
-    if (!directorySpecified) return process.cwd();
 
-    return path.resolve(process.cwd(), directory);
+    return directory ? path.resolve(process.cwd(), directory) : process.cwd();
 };
 
 program
     .usage('[opts]')
     .description(description)
     .version(version, '-v, --version', 'print the program\'s version number')
-    .option('-d, --directory [path]', 'specify a directory to scan', DIRECTORY_ARG_DEFAULT_MESSAGE);
+    .option('-d, --directory [path]', 'specify a directory to scan (default: the current directory)')
+    .option('-r, --recursive', 'whether to include subdirectories or not (default: false)');
 
 program
     .command('scan')
@@ -45,7 +42,8 @@ const commandUsed = program.args.some((arg) => arg instanceof program.Command);
 
 if (!commandUsed) {
     const workingDirectory = getWorkingDirectory();
+    const { recursive } = program;
 
-    main(workingDirectory);
+    main(workingDirectory, recursive);
 }
 
