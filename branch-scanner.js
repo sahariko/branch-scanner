@@ -23,8 +23,9 @@ program
     .description('Scans a directory\'s subdirectories for non-standard branches (default command)')
     .action(() => {
         const workingDirectory = getWorkingDirectory();
+        const { recursive } = program;
 
-        main(workingDirectory);
+        main(workingDirectory, recursive);
     });
 
 program
@@ -32,8 +33,9 @@ program
     .description('Clean those pesky leftover branches')
     .action(() => {
         const workingDirectory = getWorkingDirectory();
+        const { recursive } = program;
 
-        clean(workingDirectory);
+        clean(workingDirectory, recursive);
     });
 
 program.parse(process.argv);

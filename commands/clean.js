@@ -26,6 +26,7 @@ const deleteBranch = (branch, directoryPath) => execSync(`git branch -D ${branch
  * @param {String[]} options.branches The directory's branches.
  */
 const cleanDirectory = async ({directoryPath, parentDirectory, branches} = {}) => {
+    console.log('asdas');
     clearConsole();
 
     const generalMessage = colorizeBold(`🤖  Scanning all directories under ${parentDirectory}\n`);
