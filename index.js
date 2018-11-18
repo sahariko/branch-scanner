@@ -16,7 +16,7 @@ program
     .description(description)
     .version(version, '-v, --version', 'print the program\'s version number')
     .option('-d, --directory [path]', 'specify a directory to scan (default: the current directory)')
-    .option('-r, --recursive', 'whether to include subdirectories or not (default: false)');
+    .option('-r, --recursive', 'whether to keep running recursively or not. include subdirectories or not (default: false)');
 
 program
     .command('scan')
