@@ -1,22 +1,14 @@
 const path = require('path');
-const { execSync } = require('child_process');
 const inquirer = require('inquirer');
 const {
     colorizeFactory,
     clearConsole,
-    getCurrentBranch,
+    git,
     scanAndExecute
 } = require('../lib');
 
 const colorizeBold = colorizeFactory(1);
 const colorizeCyan = colorizeFactory(36);
-
-const checkoutBranch = (directoryPath) => execSync(`git stash && git checkout master`, {
-    cwd: directoryPath
-});
-const deleteBranch = (branch, directoryPath) => execSync(`git branch -D ${branch}`, {
-    cwd: directoryPath
-});
 
 /**
  * Interactively cleans a given directory from non-standard git branches.
@@ -35,7 +27,7 @@ const cleanDirectory = async ({directoryPath, parentDirectory, branches} = {}) =
     console.log(generalMessage);
     console.log(colorizeBold('Cleaning'), colorizeCyan(`${directory}\n`));
 
-    const currentBranch = await getCurrentBranch(directoryPath);
+    const currentBranch = await git.getCurrentBranch(directoryPath);
 
     const answers = await inquirer
         .prompt([
@@ -52,10 +44,10 @@ const cleanDirectory = async ({directoryPath, parentDirectory, branches} = {}) =
     answers.branches.forEach((branch) => {
         try {
             if (branch === currentBranch) {
-                checkoutBranch(directoryPath);
+                git.checkoutBranch(directoryPath);
             }
 
-            deleteBranch(branch, directoryPath);
+            git.deleteBranch(branch, directoryPath);
         } catch (e) {
             console.error(e.message);
         }
