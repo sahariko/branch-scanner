@@ -4,11 +4,14 @@ const {
     colorizeFactory,
     clearConsole,
     git,
-    scanAndExecute
+    getLongestString,
+    scanAndExecute,
+    howLongAgo
 } = require('../lib');
 
 const colorizeBold = colorizeFactory(1);
 const colorizeCyan = colorizeFactory(36);
+const colorizeGray = colorizeFactory(90);
 
 /**
  * Interactively cleans a given directory from non-standard git branches.
@@ -18,7 +21,6 @@ const colorizeCyan = colorizeFactory(36);
  * @param {String[]} options.branches The directory's branches.
  */
 const cleanDirectory = async ({directoryPath, parentDirectory, branches} = {}) => {
-    console.log('asdas');
     clearConsole();
 
     const generalMessage = colorizeBold(`🤖  Scanning all directories under ${parentDirectory}\n`);
@@ -26,6 +28,21 @@ const cleanDirectory = async ({directoryPath, parentDirectory, branches} = {}) =
 
     console.log(generalMessage);
     console.log(colorizeBold('Cleaning'), colorizeCyan(`${directory}\n`));
+
+    const longestBranchName = getLongestString(branches);
+
+    for (let i = 0; i < branches.length; i++) {
+        const branch = branches[i];
+        const lastDate = await git.getBranchLastUpdatedDate(branch, directoryPath);
+        const humanReadableDate = howLongAgo(lastDate * 1000);
+        const spacesAmount = longestBranchName.length - branch.length + 1;
+
+        branches[i] = [
+            branches[i],
+            ' '.repeat(spacesAmount),
+            colorizeGray(humanReadableDate)
+        ].join('');
+    }
 
     const currentBranch = await git.getCurrentBranch(directoryPath);
 
