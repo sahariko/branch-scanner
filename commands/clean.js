@@ -85,9 +85,8 @@ const cleanDirectory = async ({directoryPath, parentDirectory, branches} = {}) =
             },
         ]);
 
-
-    answers.branches.forEach((_, index) => {
-        const branch = branches[index];
+    answers.branches.forEach((branchPrompt) => {
+        const branch = branches.find((branch) => branchPrompt.startsWith(branch));
 
         try {
             if (branch === currentBranch) {
