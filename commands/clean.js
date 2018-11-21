@@ -70,7 +70,7 @@ const cleanDirectory = async ({directoryPath, parentDirectory, branches} = {}) =
         return [
             branch,
             ' '.repeat(spacesAmount),
-            colorizeGray(humanReadableDate)
+            colorizeGray(`Updated ${humanReadableDate}`)
         ].join('');
     });
 
