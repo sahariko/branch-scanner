@@ -25,7 +25,7 @@ jobs:
           echo ::set-output name=success::$(echo "true")
         if: github.ref == 'refs/heads/master'
         env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - uses: 'marvinpinto/action-automatic-releases@latest'
         if: steps.publish.outputs.success == 'true'
         with:
