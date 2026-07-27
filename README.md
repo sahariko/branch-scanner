@@ -1,4 +1,4 @@
-# npx branch-scanner [![](https://img.shields.io/npm/v/npx branch-scanner.svg?colorA=cb3837&colorB=474a50)](https://www.npmjs.com/package/npx branch-scanner)
+# branch-scanner [![](https://img.shields.io/npm/v/branch-scanner.svg?colorA=cb3837&colorB=474a50)](https://www.npmjs.com/package/branch-scanner)
 
 A CLI utility that lists and cleans non-standard git branches and worktrees across your local repositories.
 
@@ -16,7 +16,7 @@ A CLI utility that lists and cleans non-standard git branches and worktrees acro
 
 Run directly with npx — no install needed:
 ```sh
-npx npx branch-scanner
+npx branch-scanner
 ```
 
 ### Options
