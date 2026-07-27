@@ -20,22 +20,26 @@ program
 
 program
     .command('scan')
-    .description('Scans a directory\'s subdirectories for non-standard branches (default command)')
-    .action(() => {
+    .description('Scans a directory for non-standard branches (default command)')
+    .option('-c, --children', 'scan the directory\'s children instead of the directory itself')
+    .action((cmd) => {
         const workingDirectory = getWorkingDirectory();
         const { recursive } = program;
 
-        main(workingDirectory, recursive);
+        main(workingDirectory, recursive, {children: cmd.children});
     });
 
 program
     .command('clean')
     .description('Clean those pesky leftover branches')
-    .action(() => {
+    .option('-c, --children', 'target the directory\'s children instead of the directory itself')
+    .option('--worktrees', 'non-interactive: remove all worktrees without prompting')
+    .option('--debug', 'print debug information')
+    .action((cmd) => {
         const workingDirectory = getWorkingDirectory();
         const { recursive } = program;
 
-        clean(workingDirectory, recursive);
+        clean(workingDirectory, recursive, {children: cmd.children, removeWorktrees: cmd.worktrees, debug: cmd.debug});
     });
 
 program.parse(process.argv);

@@ -40,14 +40,10 @@ const sortArrays = (branches, dates) => {
     }
 };
 
-/**
- * Interactively cleans a given directory from non-standard git branches.
- * @param {Object}   options
- * @param {Boolean}  options.recursive Whether the scan should run recursively or not.
- * @param {String}   options.directoryPath The absolute path to the directory.
- * @param {String[]} options.branches The directory's branches.
- */
-const cleanDirectory = async ({directoryPath, parentDirectory, branches} = {}) => {
+const WORKTREE_PREFIX = '🌿 ';
+
+const cleanDirectory = async ({directoryPath, parentDirectory, branches, worktrees, removeWorktrees = false, debug = false} = {}) => {
+    const log = debug ? (...args) => console.log('[debug]', ...args) : () => {};
     clearConsole();
 
     const generalMessage = colorizeBold(`🤖  Scanning all directories under ${parentDirectory}\n`);
@@ -56,8 +52,12 @@ const cleanDirectory = async ({directoryPath, parentDirectory, branches} = {}) =
     console.log(generalMessage);
     console.log(colorizeBold('Cleaning'), colorizeCyan(`${directory}\n`));
 
-    const branchesDates = await getBranchesDates(directoryPath, branches);
-    const currentBranch = await git.getCurrentBranch(directoryPath);
+    log('fetching branch dates and current branch...');
+    const [branchesDates, currentBranch] = await Promise.all([
+        getBranchesDates(directoryPath, branches),
+        git.getCurrentBranch(directoryPath)
+    ]);
+    log('current branch:', currentBranch, '| branches:', branches);
 
     sortArrays(branches, branchesDates);
 
@@ -74,36 +74,64 @@ const cleanDirectory = async ({directoryPath, parentDirectory, branches} = {}) =
         ].join('');
     });
 
-    const answers = await inquirer
-        .prompt([
-            {
-                name: 'branches',
-                message: 'Which branches do you want to clean?',
-                type: 'checkbox',
-                pageSize: '20',
-                choices: branchPrompts
-            },
-        ]);
+    const worktreePrompts = worktrees.map((wt) => {
+        return `${WORKTREE_PREFIX}${wt.branch}  ${colorizeGray(wt.path)}`;
+    });
 
-    answers.branches.forEach((branchPrompt) => {
-        const branch = branches.find((branch) => branchPrompt.startsWith(branch));
+    const allChoices = [...branchPrompts, ...worktreePrompts];
 
+    let selectedChoices;
+
+    if (removeWorktrees) {
+        selectedChoices = worktreePrompts;
+    } else {
+        selectedChoices = (await inquirer.prompt([{
+            name: 'branches',
+            message: 'Which branches/worktrees do you want to clean?',
+            type: 'checkbox',
+            pageSize: '20',
+            choices: allChoices
+        }])).branches;
+    }
+
+    for (const choice of selectedChoices) {
         try {
-            if (branch === currentBranch) {
-                git.checkoutBranch(directoryPath);
-            }
+            if (choice.startsWith(WORKTREE_PREFIX)) {
+                const wt = worktrees.find((wt) => choice.includes(wt.path));
+                log('removing worktree:', wt ? wt.path : '(not found)');
 
-            git.deleteBranch(branch, directoryPath);
+                const frames = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
+                let i = 0;
+                const spinner = setInterval(() => {
+                    process.stdout.write(`\r${frames[i++ % frames.length]} Removing ${wt.path}`);
+                }, 80);
+
+                await git.removeWorktree(wt.path, directoryPath);
+
+                clearInterval(spinner);
+                process.stdout.write(`\r✓ Removed ${wt.path}\n`);
+                log('done');
+            } else {
+                const branch = branches.find((branch) => choice.startsWith(branch));
+                log('deleting branch:', branch);
+
+                if (branch === currentBranch) {
+                    git.checkoutBranch(directoryPath);
+                }
+
+                git.deleteBranch(branch, directoryPath);
+            }
         } catch (e) {
             console.error(e.message);
         }
-    });
+    }
 };
 
-module.exports = async (workingDirectory, recursive = false) => {
+module.exports = async (workingDirectory, recursive = false, {removeWorktrees = false, children = false, debug = false} = {}) => {
     await scanAndExecute({
         workingDirectory,
         recursive,
-        callback: cleanDirectory
+        children,
+        callback: (opts) => cleanDirectory({...opts, removeWorktrees, debug})
     });
 };
