@@ -1,7 +1,6 @@
 const path = require('path');
 const {
     colorizeFactory,
-    git,
     scanAndExecute
 } = require('../lib');
 
